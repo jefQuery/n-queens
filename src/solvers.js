@@ -18,43 +18,28 @@
 window.findNRooksSolution = function(n) {
   var solution = new Board({n: n});
   var rookCount = 0;
-  //choose a base case: rook at 0,0;
-  //iterate over board, 
-  //solution.togglePiece(0, 0);
-  // for (var i = 0; i < n; i++) {
-  //   for (var j = 0; j < n; j++) {
-  //     //if a rook doesn't conflict with previous rooks on board
-  //     var square = this.get(i)[j];
-  //     if (!solution.hasAnyRooksConflicts()) {
-
-  //     }
-      
-      
-  //   }
   // iterate over rows
-  // declare variables r for row and c for column
-  var r = 0;
-  var c = 0;
-  while (rookCount !== n || c < n || r < n) {
-    //debugger;
-    solution.togglePiece(r, c);
+  // declare variables row for row and c for column
+  var row = 0;
+  var col = 0;
+  while (rookCount !== n || col < n || row < n) {
+    solution.togglePiece(row, col);
     if (!solution.hasAnyRooksConflicts()) {
-      r++;
-      c++;
+      row++;
+      col++;
       rookCount++;
     } else {
-      solution.togglePiece(r, c);
-      if (c + 1 < n) {
-      // increment c by one if less than n 
-        c++;
+      solution.togglePiece(row, col);
+      if (col + 1 < n) {
+      // increment col by one if less than n 
+        col++;
       } else {
-        //else set r++ and reset c to 0
-        r++;
-        c = 0;
+        //else set row++ and reset col to 0
+        row++;
+        col = 0;
       }
     }
   }
-  //debugger;
   //if n rooks have been added, return as a solution
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
@@ -63,8 +48,33 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
 
+  //use inner recursive function
+  var rookIterator = function(numberOfRooksLeft) { //2
+    if (numberOfRooksLeft === 0) {
+      debugger;
+      solutionCount++;
+      return;
+    } else {
+      var solution = new Board({n: n});
+      var i = 0;
+
+      solution.togglePiece(n - numberOfRooksLeft, i);
+      while (solution.hasAnyRooksConflicts()) {
+        solution.togglePiece(n - numberOfRooksLeft, i);
+        solution.togglePiece(n - numberOfRooksLeft, ++i);
+        if (i === n) {
+          break;
+        }
+      }
+      
+      //if (rooksOnBoard === n && !solution.hasAnyRooksConflicts()), then solutionCount++
+      return rookIterator(numberOfRooksLeft - 1);
+    }
+  };
+  
+  rookIterator(n);
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
