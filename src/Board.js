@@ -87,13 +87,11 @@
       // }
       // return counter > 1; 
       return this.get(rowIndex).reduce((acc, bit) => acc + bit) > 1;
-
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
       // var rows = this.rows()
-      // debugger;
       // for (var i = 0; i < rows.length; i++) {
       //   if (this.hasRowConflictAt(i)){
       //     return true;
@@ -130,17 +128,17 @@
         var startingRowIdx = majorDiagonalColumnIndexAtFirstRow * -1;
         var diagonal = this.rows().map((row, i, rows) => rows[startingRowIdx + i] !== undefined ? rows[startingRowIdx + i][i] : 0);
       } else {
-        var diagonal = this.rows().map((row, i) => row[majorDiagonalColumnIndexAtFirstRow + i])
+        var diagonal = this.rows().map((row, i) => row[majorDiagonalColumnIndexAtFirstRow + i]);
       }
 
-      return diagonal.reduce((acc, bit) => (bit !== undefined ? acc + bit : acc), 0) > 1;
+      return diagonal.reduce((acc, bit) => (bit !== undefined ? acc + bit : acc)) > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      var n = this.get("n");
+      var n = this.get('n');
       return !!(this.rows().filter((row, i) => this.hasMajorDiagonalConflictAt(i)).length + 
-        this.rows().filter((row, i) => this.hasMajorDiagonalConflictAt(i-n+1)).length);
+        this.rows().filter((row, i) => this.hasMajorDiagonalConflictAt(i - n + 1)).length);
     },
 
 
@@ -155,17 +153,17 @@
         var startingRowIdx = minorDiagonalColumnIndexAtFirstRow - 3;
         var diagonal = this.rows().map((row, i, rows) => rows[startingRowIdx + i] !== undefined ? rows[startingRowIdx + i][3 - i] : 0);
       } else {
-        var diagonal = this.rows().map((row, i) => row[minorDiagonalColumnIndexAtFirstRow - i])
+        var diagonal = this.rows().map((row, i) => row[minorDiagonalColumnIndexAtFirstRow - i]);
       }
 
-      return diagonal.reduce((acc, bit) => (bit !== undefined ? acc + bit : acc), 0) > 1;
+      return diagonal.reduce((acc, bit) => (bit !== undefined ? acc + bit : acc)) > 1;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      var n = this.get("n");
+      var n = this.get('n');
       return !!(this.rows().filter((row, i) => this.hasMinorDiagonalConflictAt(i)).length + 
-        this.rows().filter((row, i) => this.hasMinorDiagonalConflictAt(i+n-1)).length);
+        this.rows().filter((row, i) => this.hasMinorDiagonalConflictAt(i + n - 1)).length);
     },
 
     /*--------------------  End of Helper Functions  ---------------------*/
