@@ -51,30 +51,34 @@ window.countNRooksSolutions = function(n) {
   var solutionCount = 0;
 
   //use inner recursive function
-  var rookIterator = function(numberOfRooksLeft) { //2
+  var rookIterator = function(numberOfRooksLeft, currentRows) { //2
+    currentRows = currentRows || {n: n};
     if (numberOfRooksLeft === 0) {
-      debugger;
       solutionCount++;
       return;
     } else {
-      var solution = new Board({n: n});
-      var i = 0;
+      for (var i = 0; i < n; i++) {
+        var solution = new Board(currentRows);
 
-      solution.togglePiece(n - numberOfRooksLeft, i);
-      while (solution.hasAnyRooksConflicts()) {
         solution.togglePiece(n - numberOfRooksLeft, i);
-        solution.togglePiece(n - numberOfRooksLeft, ++i);
-        if (i === n) {
-          break;
-        }
+        // while (solution.hasAnyRooksConflicts()) {
+        //   solution.togglePiece(n - numberOfRooksLeft, i);
+        //   solution.togglePiece(n - numberOfRooksLeft, ++i);
+        //   if (i === n) {
+        //     solution.togglePiece(n - numberOfRooksLeft, i);
+        //     break;
+        //   }
+        // }
+
+        !solution.hasAnyRooksConflicts() ? rookIterator(numberOfRooksLeft - 1, solution.rows()) : null;
+        solution.togglePiece(n - numberOfRooksLeft, i);
       }
-      
-      //if (rooksOnBoard === n && !solution.hasAnyRooksConflicts()), then solutionCount++
-      return rookIterator(numberOfRooksLeft - 1);
+      return;
     }
   };
   
   rookIterator(n);
+
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
