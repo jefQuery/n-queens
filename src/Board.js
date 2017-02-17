@@ -149,9 +149,10 @@
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       //on minor diagonals, positons = rowIdx++ && colIdx--
-      if (minorDiagonalColumnIndexAtFirstRow > 3) {
-        var startingRowIdx = minorDiagonalColumnIndexAtFirstRow - 3;
-        var diagonal = this.rows().map((row, i, rows) => rows[startingRowIdx + i] !== undefined ? rows[startingRowIdx + i][3 - i] : 0);
+      var n = this.get('n');
+      if (minorDiagonalColumnIndexAtFirstRow > n - 1) {
+        var startingRowIdx = minorDiagonalColumnIndexAtFirstRow - (n - 1);
+        var diagonal = this.rows().map((row, i, rows) => rows[startingRowIdx + i] !== undefined ? rows[startingRowIdx + i][(n - 1) - i] : 0);
       } else {
         var diagonal = this.rows().map((row, i) => row[minorDiagonalColumnIndexAtFirstRow - i]);
       }
